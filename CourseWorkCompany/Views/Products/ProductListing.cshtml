@@ -1,0 +1,76 @@
+﻿@using X.PagedList.Mvc.Core;
+@using X.PagedList.Web.Common
+
+@model X.PagedList.IPagedList<Product>
+@{
+    ViewData["Title"] = "Продукты";
+}
+
+<h1>Список продукции</h1>
+
+<p>
+    <a asp-action="ProductUpload">Добавить новый продукт</a>
+</p>
+@using (Html.BeginForm())
+{
+    <p>Введите название продукции: </p>
+    @Html.TextBox("searchName", ViewBag.CurrentFilter as string)
+    <p><input type="submit" value="Отправить" /></p>
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Название продукции
+            </th>
+            <th>
+                <a asp-action="ProductListing" asp-route-productSort="@ViewBag.ProductCharacteristic">
+                    Характеристики
+                </a>
+            </th>
+            <th>
+                Тип продукции
+            </th>
+            <th>
+                <a asp-action="ProductListing" asp-route-productSort="@ViewBag.ProductMeasurementUnit">
+                    Единицы измерения
+                </a>
+            </th>
+            <th>
+                Картинка
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Characteristic)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductionType.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MeasurementUnit)
+            </td>
+            <td>
+                <img src="@Url.Content("~/UploadedImages/" + @item.ProductFileNamePath)" height="120px" width="120px"/>
+            </td>
+            <td>
+                <a asp-action="ProductUpdate" asp-route-id="@item.ProductId">Обновить</a> |
+                <a asp-action="Details" asp-route-id="@item.ProductId">Подробности</a> |
+                <a asp-action="Delete" asp-route-id="@item.ProductId">Удалмть</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+Страница @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) из @Model.PageCount
+@Html.PagedListPager(Model, page => Url.Action("ProductListing", new { page, productSort = ViewBag.CurrentSort, currentFilter=ViewBag.CurrentFilter }), new PagedListRenderOptions {
+        LiElementClasses = new string[] { "page-item" },
+        PageClasses = new string[] { "page-link" }
+})

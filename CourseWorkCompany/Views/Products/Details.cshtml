@@ -1,0 +1,48 @@
+﻿@model CourseWorkCompany.Models.Product
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Product</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Characteristic)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Characteristic)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ProductionType)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ProductionType.ProductionTypeId)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MeasurementUnit)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MeasurementUnit)
+        </dd>
+        <dt class = "col-sm-2">
+            Фото
+        </dt>
+        <dd>
+            <img src="@Url.Content("~/UploadedImages/" + Model.ProductFileNamePath)" height="800px" width="600px" />
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="ProductUpdate" asp-route-id="@Model?.ProductId">Изменить</a> |
+    <a asp-action="ProductListing">Вернуться</a>
+</div>

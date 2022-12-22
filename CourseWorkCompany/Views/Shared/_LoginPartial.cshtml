@@ -1,0 +1,44 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+
+<ul class="navbar-nav">
+@if (SignInManager.IsSignedIn(User))
+{
+    <li class="nav-item">
+    <form class="form-inline" asp-controller="Account" asp-action="Logout">
+        <button type="submit" class="nav-link btn btn-link text-dark">Выйти из учетной записи</button>
+    </form>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="" asp-controller="Companies" asp-action="Index">Предприятия</a>
+    </li>
+    <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="ProductReleasePlans" asp-action="Index">План реализации продукции</a>
+    </li>
+    <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="ProductSalesPlans" asp-action="Index">Планы выпуска продукции</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="ProductListing">Продукты</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="" asp-controller="Roles" asp-action="Index">Роли пользователей</a>
+    </li>
+    @if (User.IsInRole("admin"))
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Index">Пользователи</a>
+        </li>
+    }
+}
+else
+{
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-controller="Account" asp-action="Register">Регистрация</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-controller="Account" asp-action="Login">Вход</a>
+    </li>
+}
+</ul>

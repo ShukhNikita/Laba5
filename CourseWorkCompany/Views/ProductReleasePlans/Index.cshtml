@@ -1,0 +1,83 @@
+﻿@using X.PagedList.Mvc.Core;
+@using X.PagedList.Web.Common
+
+@model X.PagedList.IPagedList<ProductReleasePlan>
+
+@{
+    ViewData["Title"] = "План выпуска продукции";
+}
+
+<h1>Планы реализации продукции</h1>
+
+<p>
+    <a asp-action="Create">Создать новый</a>
+</p>
+@using (Html.BeginForm())
+{
+    <p>Введите название продукции: </p>
+    @Html.TextBox("searchCompanyName", ViewBag.CurrentFilter as string)
+    <p><input type="submit" value="Отправить" /></p>
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Название компании
+            </th>
+            <th>
+                Тип выпускаемой продукции
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-productReleasePlanSort="@ViewBag.PlannedOutputVolume">
+                    План выпуска
+                </a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-productReleasePlanSort="@ViewBag.PlannedOutputVolume">
+                    Итого выпущено
+                </a>
+            </th>
+            <th>
+                Квартал
+            </th>
+            <th>
+                Год
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                    @Html.DisplayFor(modelItem => item.Company.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductionType.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PlannedOutputVolume)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ActualOutputVolume)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.QuarterInfo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.YearInfo)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ProductReleasePlanId">Изменить</a> |
+                <a asp-action="Details" asp-route-id="@item.ProductReleasePlanId">Подробности</a> |
+                <a asp-action="Delete" asp-route-id="@item.ProductReleasePlanId">Удалить</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+Страница @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) из @Model.PageCount
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page, productReleasePlanSort = ViewBag.CurrentSort, currentFilter=ViewBag.CurrentFilter }), new PagedListRenderOptions {
+        LiElementClasses = new string[] { "page-item" },
+        PageClasses = new string[] { "page-link" }
+})
